@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config/dotenvConfig.js';
 
-export const authenticateToken = (req, res, next) => {
+export const authenticateToken = async (req, res, next) => {
     const cookies = req.headers.cookie;
     const tokenCookie = cookies && cookies.split(';').find(cookie => cookie.trim().startsWith('token='));
     const token = tokenCookie && tokenCookie.split('=')[1];
@@ -22,7 +22,7 @@ export const authenticateToken = (req, res, next) => {
     });
 };
 
-export const checkAuthenticated = (req, res, next) => {
+export const checkAuthenticated = async (req, res, next) => {
     const cookies = req.headers.cookie;
     const tokenCookie = cookies && cookies.split(';').find(cookie => cookie.trim().startsWith('token='));
     const token = tokenCookie && tokenCookie.split('=')[1];

@@ -1,11 +1,11 @@
 const mainController = {
-    getIndex: (req, res) => {
+    getIndex: async (req, res) => {
         res.render('index');
     },
-    getProductInfo: (req, res) => {
+    getProductInfo: async (req, res) => {
         res.render('productinfo');
     },
-    getSupport: (req, res) => {
+    getSupport: async (req, res) => {
         res.render('support');
     },
     getCart: async (req, res) => {
@@ -14,7 +14,7 @@ const mainController = {
     getContact: async (req, res) => {
         res.render('contact');
     },
-    getAbout: (req, res) => {
+    getAbout: async (req, res) => {
         res.render('about');
     }
 };
