@@ -1,14 +1,16 @@
 import { faker } from "@faker-js/faker";
 
+const { database, commerce, random, image } = faker;
+
 export const productsGenerator = () => {
     return {
-        id: faker.database.mongodbObjectId(),
-        title: faker.commerce.product(),
-        description: faker.commerce.productDescription(),
-        price: parseInt(faker.commerce.price(100, 9000, 2)),
-        thumbnail: faker.image.imageUrl(),
-        code: faker.random.alphaNumeric(7),
-        stock: parseInt(faker.random.numeric(3)),
-        category: faker.commerce.department(),
+        id: database.mongodbObjectId(),
+        title: commerce.product(),
+        description: commerce.productDescription(),
+        price: parseInt(commerce.price(100, 9000, 2)),
+        thumbnail: image.imageUrl(),
+        code: random.alphaNumeric(7),
+        stock: parseInt(random.numeric(3)),
+        category: commerce.department(),
     }
 };
