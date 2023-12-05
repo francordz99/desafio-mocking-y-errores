@@ -14,6 +14,9 @@ import mainRoutes from "./routes/main.routes.js";
 import usersRoutes from "./routes/users.routes.js";
 import messagesRoutes from "./routes/messages.routes.js";
 import productsRoutes from "./routes/products.routes.js";
+
+import testingRoutes from "./routes/testing.routes.js"; // Mocking Y Otros Tests
+
 import { __dirname, __filename, } from "./utils.js";
 import { connectDB } from "./config/databaseConfig.js";
 import { engine } from "express-handlebars";
@@ -32,7 +35,6 @@ app.use(express.json());
 app.use(express.static('public', { 'extensions': ['html', 'htm', 'js', 'css'] }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-
 
 // Handlebars
 
@@ -58,6 +60,8 @@ app.use('/', mainRoutes);
 app.use('/', messagesRoutes);
 app.use('/', usersRoutes);
 app.use('/', productsRoutes);
+
+app.use('/', testingRoutes); // Mocking Y Otros Tests
 
 // Arranque Del Server
 
