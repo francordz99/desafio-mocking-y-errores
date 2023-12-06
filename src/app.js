@@ -20,6 +20,7 @@ import testingRoutes from "./routes/testing.routes.js"; // Mocking Y Otros Tests
 import { __dirname, __filename, } from "./utils.js";
 import { connectDB } from "./config/databaseConfig.js";
 import { engine } from "express-handlebars";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 // Express & Socket
 
@@ -62,6 +63,10 @@ app.use('/', usersRoutes);
 app.use('/', productsRoutes);
 
 app.use('/', testingRoutes); // Mocking Y Otros Tests
+
+// Manejo De Errores
+
+app.use(errorHandler);
 
 // Arranque Del Server
 
