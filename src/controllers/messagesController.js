@@ -1,5 +1,6 @@
 import Message from "../dao/models/messageModel.js";
 import configureSocket from '../config/socketConfig.js';
+import { messagesErrors } from '../services/errors/messagesErrors.js';
 const { io } = configureSocket();
 
 const messagesController = {
@@ -9,7 +10,7 @@ const messagesController = {
             res.render('chat', { messages });
         } catch (error) {
             console.error(error);
-            res.status(500).send('Error al obtener los mensajes del chat');
+            messagesErrors.getChatMessagesError();
         }
     },
     postMessage: async (req, res) => {
@@ -25,7 +26,7 @@ const messagesController = {
             res.render('chat', { messages });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: "Error al enviar el mensaje" });
+            messagesErrors.postMessageError();
         }
     },
 };

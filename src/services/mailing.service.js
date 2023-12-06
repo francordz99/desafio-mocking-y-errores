@@ -2,6 +2,7 @@ import { transporter } from "../config/nodemailerConfig.js";
 import { config } from "../config/dotenvConfig.js";
 import { __dirname } from "../utils.js";
 import path from 'path';
+import { mailingErrors } from './errors/mailingErrors.js';
 
 const MailingService = {
     sendPurchaseConfirmation: async (userEmail, ticketCode) => {
@@ -29,6 +30,7 @@ const MailingService = {
             return { success: true, result };
         } catch (error) {
             console.error('Error al enviar el correo:', error);
+            mailingErrors.sendPurchaseConfirmationError(error);
             return { success: false, error: 'Hubo un error al enviar el correo' };
         }
     },

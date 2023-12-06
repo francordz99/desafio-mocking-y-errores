@@ -1,4 +1,5 @@
 import Product from '../dao/models/productModel.js';
+import { productsErrors } from '../services/errors/productsErrors.js';
 
 const productsController = {
     getProducts: async (req, res) => {
@@ -10,7 +11,7 @@ const productsController = {
             res.render('products', { products });
         } catch (error) {
             console.error(error);
-            res.render('products', { errorMessage: 'Error al obtener la lista de productos.' });
+            productsErrors.getProductsError();
         }
     },
 };

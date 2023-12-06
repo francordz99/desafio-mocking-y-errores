@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config/dotenvConfig.js';
 import User from '../dao/models/userModel.js';
+import { checkRoleErrors } from '../services/errors/checkRoleErrors.js';
 
 const checkAdminRole = async (req, res, next) => {
     try {
@@ -14,7 +15,7 @@ const checkAdminRole = async (req, res, next) => {
         const user = await User.findOne({ email: decodedToken.username });
 
         if (!user) {
-            return res.status(401).send('Usuario no encontrado.');
+            checkRoleErrors.checkAdminRoleError();
         }
 
         if (user.role === 'admin') {
@@ -25,7 +26,7 @@ const checkAdminRole = async (req, res, next) => {
         }
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error al verificar el rol del usuario: ' + error.message);
+        checkRoleErrors.checkAdminRoleError();
     }
 };
 
@@ -41,7 +42,7 @@ const checkUserRole = async (req, res, next) => {
         const user = await User.findOne({ email: decodedToken.username });
 
         if (!user) {
-            return res.status(401).send('Usuario no encontrado.');
+            checkRoleErrors.checkUserRoleError();
         }
 
         if (user.role === 'user') {
@@ -52,9 +53,8 @@ const checkUserRole = async (req, res, next) => {
         }
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error al verificar el rol del usuario: ' + error.message);
+        checkRoleErrors.checkUserRoleError();
     }
 };
 
 export { checkAdminRole, checkUserRole };
-

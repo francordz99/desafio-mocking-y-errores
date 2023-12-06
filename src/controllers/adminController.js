@@ -1,5 +1,6 @@
 import Product from "../dao/models/productModel.js";
 import User from "../dao/models/userModel.js";
+import { adminErrors } from "../services/errors/adminErrors.js";
 
 const adminController = {
     getAdmin: async (req, res) => {
@@ -11,15 +12,13 @@ const adminController = {
             const existingProduct = await Product.findOne({ code });
 
             if (!existingProduct) {
-                const errorMessage = 'Error, el producto no existe o tiene otro codigo.';
-                res.render('admin', { errorMessage });
+                adminErrors.getProductNotFoundError();
             }
 
             res.render('admin', { product: existingProduct });
         } catch (error) {
             console.error(error);
-            const errorMessage = 'Error al obtener el producto: ' + error.message;
-            res.render('admin', { errorMessage });
+            adminErrors.getProductError(error);
         }
     },
     postProduct: async (req, res) => {
@@ -39,8 +38,7 @@ const adminController = {
             res.render('admin', { successMessage });
         } catch (error) {
             console.error(error);
-            const errorMessage = 'Error al agregar el producto: ' + error.message;
-            res.render('admin', { errorMessage });
+            adminErrors.addProductError(error);
         }
     },
     putProduct: async (req, res) => {
@@ -66,8 +64,7 @@ const adminController = {
 
         } catch (error) {
             console.error(error);
-            const errorMessage = 'Error al editar el producto: ' + error.message;
-            res.render('admin', { errorMessage });
+            adminErrors.editProductError(error);
         }
     },
     deleteProduct: async (req, res) => {
@@ -84,15 +81,14 @@ const adminController = {
             res.render('admin', { successMessage });
         } catch (error) {
             console.error(error);
-            const errorMessage = 'Error al eliminar el producto: ' + error.message;
-            res.render('admin', { errorMessage });
+            adminErrors.deleteProductError(error);
         }
     },
     editPermissions: async (req, res) => {
         try {
             const { email, permissionLevel } = req.body;
             const user = await User.findOne({ email: email });
-            console.log(permissionLevel);
+
             if (!user) {
                 return res.status(404).send('Usuario no encontrado.');
             }
@@ -104,8 +100,7 @@ const adminController = {
 
         } catch (error) {
             console.error(error);
-            const errorMessage = 'Error al editar permisos: ' + error.message;
-            res.render('admin', { errorMessage });
+            adminErrors.editPermissionsError(error);
         }
     }
 };

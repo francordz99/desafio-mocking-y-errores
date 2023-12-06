@@ -3,6 +3,7 @@ import Cart from '../dao/models/cartModel.js';
 import jwt from 'jsonwebtoken';
 import { config } from '../config/dotenvConfig.js';
 import { isValidPassword, createHash } from '../utils.js';
+import { authErrors } from '../services/errors/authErrors.js';
 
 const authController = {
     register: async (req, res) => {
@@ -29,7 +30,7 @@ const authController = {
             res.redirect('/login');
         } catch (error) {
             console.error(error);
-            res.status(500).send('Error al registrar: ' + error.message);
+            authErrors.registrationError(error.message);
         }
     },
 
@@ -43,11 +44,11 @@ const authController = {
                 res.cookie('token', token, { httpOnly: false });
                 res.redirect(`/?token=${token}`);
             } else {
-                res.status(401).send('Correo o contraseña incorrectos');
+                authErrors.loginError();
             }
         } catch (error) {
             console.error(error);
-            res.status(500).send('Error al iniciar sesión: ' + error.message);
+            authErrors.loginServerError(error.message);
         }
     },
 
@@ -66,4 +67,3 @@ const authController = {
 };
 
 export default authController;
-

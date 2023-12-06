@@ -1,4 +1,6 @@
+// ticket.service.js
 import Ticket from "../dao/models/ticketModel.js";
+import { ticketErrors } from './errors/ticketErrors.js';
 
 const TicketService = {
     generateTicketCode: () => {
@@ -7,13 +9,18 @@ const TicketService = {
     },
 
     createTicket: async (code, purchaseDateTime, amount, purchaser) => {
-        const newTicket = new Ticket({
-            code: code,
-            purchaseDateTime: purchaseDateTime,
-            amount: amount,
-            purchaser: purchaser,
-        });
-        await newTicket.save();
+        try {
+            const newTicket = new Ticket({
+                code: code,
+                purchaseDateTime: purchaseDateTime,
+                amount: amount,
+                purchaser: purchaser,
+            });
+            await newTicket.save();
+        } catch (error) {
+            console.error('Error al crear el ticket:', error);
+            ticketErrors.ticketCreationError(error);
+        }
     },
 };
 

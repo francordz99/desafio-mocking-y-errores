@@ -2,6 +2,7 @@ import User from "../dao/models/userModel.js";
 import jwt from 'jsonwebtoken';
 import { config } from "../config/dotenvConfig.js";
 import { userInfoDto } from "../dto/userInfo.js";
+import { usersErrors } from '../services/errors/usersErrors.js';
 
 const usersController = {
     getInformation: async (req, res) => {
@@ -11,13 +12,13 @@ const usersController = {
             const userEmail = decodedToken.username;
             const user = await User.findOne({ email: userEmail });
             if (!user) {
-                return res.status(404).send('Usuario no encontrado.');
+                usersErrors.getInformationError();
             }
             const userDto = new userInfoDto(user);
             res.render('profile', { userEmail: userEmail, user: userDto });
         } catch (error) {
             console.error(error);
-            res.status(500).send('Error al obtener la información del usuario: ' + error.message);
+            usersErrors.getInformationError();
         }
     },
     editInformation: async (req, res) => {
@@ -40,15 +41,14 @@ const usersController = {
                 { new: true }
             );
             if (!updatedUser) {
-                return res.status(404).send('Usuario no encontrado.');
+                usersErrors.editInformationError();
             }
             res.render('profile', { successMessage: 'Datos Actualizados Con Éxito', userEmail: userEmail });
         } catch (error) {
             console.error(error);
-            res.status(500).send('Error al editar la información del usuario: ' + error.message);
+            usersErrors.editInformationError();
         }
     },
-
 };
 
 export default usersController;

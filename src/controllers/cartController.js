@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import MailingService from "../services/mailing.service.js";
 import TicketService from "../services/ticket.service.js";
 import { config } from "../config/dotenvConfig.js";
-import { __dirname } from "../utils.js";
+import { cartErrors } from '../services/errors/cartErrors.js';
 
 const cartController = {
     addProductToCart: async (req, res) => {
@@ -25,7 +25,7 @@ const cartController = {
             res.status(200).json({ message: 'Producto agregado al carrito con éxito' });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Error al agregar el producto al carrito' });
+            cartErrors.addProductToCartError();
         }
     },
     getCartProducts: async (req, res) => {
@@ -53,7 +53,7 @@ const cartController = {
             res.render('cart', { products: productDetails });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Error al obtener los productos del carrito' });
+            cartErrors.getCartProductsError();
         }
     },
     deleteProductFromCart: async (req, res) => {
@@ -77,7 +77,7 @@ const cartController = {
             res.status(200).json({ message: 'Producto eliminado del carrito con éxito' });
         } catch (error) {
             console.error('Error al eliminar el producto del carrito:', error);
-            res.status(500).json({ error: 'Error interno del servidor' });
+            cartErrors.deleteProductFromCartError();
         }
     },
     editProductQuantity: async (req, res) => {
@@ -102,7 +102,7 @@ const cartController = {
             res.status(200).json({ success: true, message: 'Cantidad del producto actualizada correctamente' });
         } catch (error) {
             console.error('Error al actualizar la cantidad del producto:', error);
-            res.status(500).json({ error: 'Error interno del servidor' });
+            cartErrors.editProductQuantityError();
         }
     },
     buyItems: async (req, res) => {
@@ -155,7 +155,7 @@ const cartController = {
             }
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ success: false, message: 'Error en el servidor' });
+            cartErrors.buyItemsError();
         }
     },
 }
